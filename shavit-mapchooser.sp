@@ -6,9 +6,10 @@
 #include <cstrike>
 
 #undef REQUIRE_PLUGIN
+// for MapChange type
 #include <mapchooser>
 
-#define PLUGIN_VERSION "1.0.0"
+#define PLUGIN_VERSION "1.0.1"
 
 Database g_hDatabase;
 char g_cSQLPrefix[32];
@@ -137,8 +138,6 @@ public void OnMapStart()
 	LoadMapList();
 	// cache the nominate menu so that it isn't being built every time player opens it
 	CreateNominateMenu();
-	
-	CreateTimer( 1.0, Timer_OnSecond, _, TIMER_REPEAT | TIMER_FLAG_NO_MAPCHANGE );
 }
 
 public Action OnRoundStartPost( Event event, const char[] name, bool dontBroadcast )
@@ -171,7 +170,7 @@ public void OnMapEnd()
 	}
 }
 
-public Action Timer_OnSecond( Handle timer )
+public void OnMapTimeLeftChanged()
 {
 	#if defined DEBUG
 	if( g_bDebug )
