@@ -9,7 +9,7 @@
 // for MapChange type
 #include <mapchooser>
 
-#define PLUGIN_VERSION "1.0.2"
+#define PLUGIN_VERSION "1.0.3"
 
 Database g_hDatabase;
 char g_cSQLPrefix[32];
@@ -452,7 +452,7 @@ public void Handler_MapVoteFinished(Menu menu,
 	
 	if( num_votes == 0 )
 	{
-		menu.GetItem( GetRandomInt( 0, 7 ), map, sizeof(map) );
+		menu.GetItem( GetRandomInt( 0, num_votes - 1 ), map, sizeof(map) ); // if no votes, pick a random selection from the vote options
 	}
 	else
 	{
@@ -489,69 +489,6 @@ public void Handler_MapVoteFinished(Menu menu,
 		PrintToChatAll( "[SMC] The map will continue" );
 		
 		ClearRTV();
-	}
-	else if( StrEqual( map, "novote" ) )
-	{
-		if( num_items <= 1 )
-		{
-			PrintToChatAll( "[SMC] No vote, map will continue" );
-		
-			g_bMapVoteStarted = false;
-			g_bMapVoteFinished = false;
-			
-			if( g_ChangeTime == MapChange_MapEnd )
-			{
-				ExtendMap();
-			}
-			
-			return;
-		}
-	
-		// if no vote was the no. 1 pick, go with second most popular vote
-		menu.GetItem(item_info[1][VOTEINFO_ITEM_INDEX], map, sizeof(map), _, displayName, sizeof(displayName));
-		if( StrEqual( map, "dontchange" ) )
-		{
-			g_bMapVoteStarted = false;
-			g_bMapVoteFinished = false;
-			
-			PrintToChatAll( "[SMC] The map will continue" );
-			
-			ClearRTV();
-		}
-		else if( StrEqual( map, "extend" ) )
-		{
-			g_iExtendCount++;
-			
-			int time;
-			if( GetMapTimeLimit( time ) )
-			{
-				if (time > 0)
-				{
-					ExtendMapTimeLimit( g_cvMapVoteExtendTime.IntValue * 60 );						
-				}
-			}
-
-			PrintToChatAll( "[SMC] Voting for next map has finished. The current map has been extended." );
-			
-			// We extended, so we'll have to vote again.
-			g_bMapVoteStarted = false;
-		}
-		else if( map[0] != '\0' )
-		{
-			if( g_ChangeTime == MapChange_MapEnd )
-			{
-				SetNextMap(map);
-			}
-			else if( g_ChangeTime == MapChange_Instant )
-			{
-				ChangeMapDelayed( map );
-			}
-			
-			g_bMapVoteStarted = false;
-			g_bMapVoteFinished = true;
-			
-			PrintToChatAll( "[SMC] Voting for next map has finished. Next map: %s.", map );
-		}
 	}
 	else
 	{	
@@ -937,7 +874,7 @@ public Action Command_RockTheVote( int client, int args )
 	else if( g_bRockTheVote[client] )
 	{
 		int needed = GetRTVVotesNeeded();
-		ReplyToCommand( client, "[SMC] You have already RTVed, if you want to un-RTV use the command sm_unrtv (%i more %s needed)", (needed == 1) ? "vote" : "votes" );
+		ReplyToCommand( client, "[SMC] You have already RTVed, if you want to un-RTV use the command sm_unrtv (%i more %s needed)", needed, (needed == 1) ? "vote" : "votes" );
 	}
 	else if( g_cvRTVMinimumPoints.IntValue != -1 && Shavit_GetPoints( client ) <= g_cvRTVMinimumPoints.FloatValue )
 	{
