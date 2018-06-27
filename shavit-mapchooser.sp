@@ -102,7 +102,7 @@ public void OnPluginStart()
 	g_cvMapVoteStartTime = CreateConVar( "smc_mapvote_start_time", "5", "Time in minutes before map end that map vote starts", _, true, 1.0, false );
 	
 	g_cvRTVAllowSpectators = CreateConVar( "smc_rtv_allow_spectators", "1", "Whether spectators should be allowed to RTV", _, true, 0.0, true, 1.0 );
-	g_cvRTVMinimumPoints = CreateConVar( "smc_rtv_minimum points", "-1", "Minimum number of points a player must have before being able to RTV, or -1 to allow everyone", _, true, -1.0, false );
+	g_cvRTVMinimumPoints = CreateConVar( "smc_rtv_minimum_points", "-1", "Minimum number of points a player must have before being able to RTV, or -1 to allow everyone", _, true, -1.0, false );
 	g_cvRTVDelayTime = CreateConVar( "smc_rtv_delay", "5", "Time in minutes after map start before players should be allowed to RTV", _, true, 0.0, false );
 	g_cvRTVRequiredPercentage = CreateConVar( "smc_rtv_required_percentage", "50", "Percentage of players who have RTVed before a map vote is initiated", _, true, 1.0, true, 100.0 );
 
