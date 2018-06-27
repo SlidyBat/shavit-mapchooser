@@ -9,10 +9,12 @@
 // for MapChange type
 #include <mapchooser>
 
-#define PLUGIN_VERSION "1.0.1"
+#define PLUGIN_VERSION "1.0.2"
 
 Database g_hDatabase;
 char g_cSQLPrefix[32];
+
+bool g_bLate;
 
 #if defined DEBUG
 bool g_bDebug;
@@ -73,17 +75,22 @@ public Plugin myinfo =
 	url = ""
 }
 
+public APLRes AskPluginLoad2( Handle myself, bool late, char[] error, int err_max )
+{
+	g_bLate = late;
+	
+	return APLRes_Success;
+}
+
 public void OnPluginStart()
 {
-	CreateNominateMenu();
-
 	HookEvent( "round_start", OnRoundStartPost );
 
 	g_aMapList = new ArrayList( ByteCountToCells(PLATFORM_MAX_PATH) );
 	g_aMapTiers = new ArrayList();
 	g_aNominateList = new ArrayList( ByteCountToCells(PLATFORM_MAX_PATH) );
 	g_aOldMaps = new ArrayList( ByteCountToCells(PLATFORM_MAX_PATH) );
-
+	
 	g_cvMapListType = CreateConVar( "smc_maplist_type", "0", "Where the plugin should get the map list from. 0 = zoned maps from database, 1 = from maplist file (maplist.txt), 2 = from maps folder", _, true, 0.0, true, 2.0 );
 	
 	g_cvMapVoteBlockMapInterval = CreateConVar( "smc_mapvote_blockmap_interval", "1", "How many maps should be played before a map can be nominated again", _, true, 0.0, false );
@@ -109,6 +116,11 @@ public void OnPluginStart()
 	RegConsoleCmd( "sm_unnominate", Command_UnNominate, "Removes nominations" );
 	RegConsoleCmd( "sm_rtv", Command_RockTheVote, "Lets players Rock The Vote" );
 	RegConsoleCmd( "sm_unrtv", Command_UnRockTheVote, "Lets players un-Rock The Vote" );
+	
+	if( g_bLate )
+	{
+		OnMapStart();
+	}
 	
 	#if defined DEBUG
 	RegConsoleCmd( "sm_smcdebug", Command_Debug );
