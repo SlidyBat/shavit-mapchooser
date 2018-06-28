@@ -896,7 +896,7 @@ public Action Command_RockTheVote( int client, int args )
 void CheckRTV( int client = 0 )
 {
 	int needed = GetRTVVotesNeeded();
-		
+	
 	if( needed > 0 )
 	{
 		if( client != 0 )
@@ -1075,6 +1075,13 @@ stock int GetRTVVotesNeeded()
 	}
 	
 	int totalNeeded = RoundToFloor( total * (g_cvRTVRequiredPercentage.FloatValue / 100) );
+	
+	// always clamp to 1, so if rtvcount is 0 it never initiates RTV
+	if( totalNeeded < 1 )
+	{
+		totalNeeded = 1;
+	}
+	
 	return totalNeeded - rtvcount;
 }
 
