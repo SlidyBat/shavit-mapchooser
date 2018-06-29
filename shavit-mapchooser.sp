@@ -150,6 +150,8 @@ public void OnMapStart()
 	LoadMapList();
 	// cache the nominate menu so that it isn't being built every time player opens it
 	CreateNominateMenu();
+	
+	CreateTimer( 1.0, Timer_OnSecond, _, TIMER_REPEAT | TIMER_FLAG_NO_MAPCHANGE );
 }
 
 public Action OnRoundStartPost( Event event, const char[] name, bool dontBroadcast )
@@ -182,7 +184,7 @@ public void OnMapEnd()
 	}
 }
 
-public void OnMapTimeLeftChanged()
+public Action Timer_OnSecond( Handle timer )
 {
 	#if defined DEBUG
 	if( g_bDebug )
