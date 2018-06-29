@@ -209,7 +209,7 @@ public void OnMapTimeLeftChanged()
 				}
 				case 60 - 3:
 				{
-					PrintToChatAll( "[SMC] 1 minutes till map vote" );
+					PrintToChatAll( "[SMC] 1 minute till map vote" );
 				}
 				case 30 - 3:
 				{
