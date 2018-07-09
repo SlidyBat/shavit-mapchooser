@@ -9,7 +9,7 @@
 // for MapChange type
 #include <mapchooser>
 
-#define PLUGIN_VERSION "1.0.3"
+#define PLUGIN_VERSION "1.0.4"
 
 Database g_hDatabase;
 char g_cSQLPrefix[32];
