@@ -643,8 +643,10 @@ public void LoadZonedMapsCallback( Database db, DBResultSet results, const char[
 	{	
 		results.FetchString( 0, map, sizeof(map) );
 		
-		if( FindMap( map, map, sizeof(map) ) == FindMap_Found )
+		// TODO: can this cause duplicate entries?
+		if( FindMap( map, map, sizeof(map) ) != FindMap_NotFound )
 		{
+			GetMapDisplayName( map, map, sizeof(map) );
 			g_aMapList.PushString( map );
 			g_aMapTiers.Push( results.FetchInt( 1 ) );
 		}
