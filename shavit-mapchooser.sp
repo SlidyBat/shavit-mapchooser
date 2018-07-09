@@ -692,6 +692,7 @@ public Action Timer_ChangeMap( Handle timer, DataPack data )
 	data.Reset();
 	data.ReadString( map, sizeof(map) );
 	
+	SetNextMap( map );
 	ForceChangeLevel( map, "RTV Mapvote" );
 }
 
